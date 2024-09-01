@@ -86,18 +86,18 @@ func (h *Handler) updateList(c *gin.Context) {
 		return
 	}
 
-	var input todoapp.UpdateListInput
+	var input todoapp.UpdateItemInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	
-	if err := h.services.Update(userId, id, input); err != nil {
+
+	if err := h.services.TodoItem.Update(userId, id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	h.services.Update(userId, id, input)
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
 func (h *Handler) deleteList(c *gin.Context) {
